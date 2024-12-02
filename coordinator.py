@@ -1,31 +1,28 @@
-import argparse
+import asyncio
+from typing import Dict
 
 class Coordinator:
     """Manages workers and aggregates results"""
     
     def __init__(self, port: int):
-        print(f"Starting coordinator on port {port}")
         self.workers = {}
         self.results = {}
-        self.port = port
-
-    def start(self) -> None:
-        """Start coordinator server"""
-        print(f"Starting coordinator on port {self.port}...")
-        pass
 
     async def distribute_work(self, filepath: str) -> None:
         """Split file and assign chunks to workers"""
+        # Logic to split the file and assign to workers
         pass
 
     async def handle_worker_failure(self, worker_id: str) -> None:
         """Reassign work from failed worker"""
+        # Logic to handle worker failure and reassign work
         pass
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Log Analyzer Coordinator")
-    parser.add_argument("--port", type=int, default=8000, help="Coordinator port")
-    args = parser.parse_args()
+    async def start(self):
+        """Start the coordinator"""
+        # Start the server and listen for worker messages
+        pass
 
-    coordinator = Coordinator(port=args.port)
-    coordinator.start()
+# Coordinator usage example
+coordinator = Coordinator(8000)
+asyncio.run(coordinator.start())
