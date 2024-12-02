@@ -1,33 +1,36 @@
-import argparse
-
+import asyncio
+from typing import Dict
 
 class Worker:
     """Processes log chunks and reports results"""
     
-    def __init__(self, port: int, worker_id: str, coordinator_url: str):
+    def __init__(self, worker_id: str, coordinator_url: str):
         self.worker_id = worker_id
         self.coordinator_url = coordinator_url
-        self.port = port
-    
-    def start(self) -> None:
-        """Start worker server"""
-        print(f"Starting worker {self.worker_id} on port {self.port}...")
-        pass
 
-    async def process_chunk(self, filepath: str, start: int, size: int) -> dict:
+    async def process_chunk(self, filepath: str, start: int, size: int) -> Dict:
         """Process a chunk of log file and return metrics"""
-        pass
+        metrics = {}
+        with open(filepath, 'r') as file:
+            file.seek(start)
+            chunk = file.read(size)
+            # Process the chunk to extract metrics
+            # Example: metrics = parse_chunk(chunk)
+        return metrics
 
     async def report_health(self) -> None:
         """Send heartbeat to coordinator"""
-        pass
+        while True:
+            # Send a heartbeat to the coordinator
+            # Example: send_heartbeat(self.worker_id, self.coordinator_url)
+            await asyncio.sleep(5)
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Log Analyzer Coordinator")
-    parser.add_argument("--port", type=int, default=8000, help="Coordinator port")
-    parser.add_argument("--id", type=str, default="worker1", help="Worker ID")
-    parser.add_argument("--coordinator", type=str, default="http://localhost:8000", help="Coordinator URL")
-    args = parser.parse_args()
+    async def start(self, filepath: str, start: int, size: int):
+        """Start processing a chunk"""
+        metrics = await self.process_chunk(filepath, start, size)
+        # Send metrics to the coordinator
+        # Example: send_metrics(self.worker_id, self.coordinator_url, metrics)
 
-    worker = Worker(port=args.port, worker_id=args.id, coordinator_url=args.coordinator)
-    worker.start()
+# Worker usage example
+worker = Worker('alice', 'http://localhost:8000')
+asyncio.run(worker.start('logfile.log', 0, 1000))
